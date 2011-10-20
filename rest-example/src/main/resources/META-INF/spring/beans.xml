@@ -1,0 +1,57 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+              http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+              http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+              http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd">
+
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-extension-jaxrs-binding.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-extension-http-jetty.xml"/>
+
+    <jaxrs:server id="bookservice" address="http://localhost:20808/">
+        <!-- <jaxrs:inInterceptors>
+          <ref bean="logInbound"/>
+        </jaxrs:inInterceptors>-->
+
+        <jaxrs:serviceBeans>
+            <ref bean="myService"/>
+        </jaxrs:serviceBeans>
+        <!--      <jaxrs:dataBinding>
+            <ref bean="jaxrs-data-binding"/>
+        </jaxrs:dataBinding>-->
+        <!-- <jaxrs:extensionMappings>
+           <entry key="xml" value="application/xml"/>
+        </jaxrs:extensionMappings>
+        <jaxrs:providers>
+           <ref bean="jaxbXmlProvider"/>
+        </jaxrs:providers>-->
+
+    </jaxrs:server>
+
+    <bean id="myService" class="pl.touk.cxf.rest.example.MyServiceImpl"/>
+
+    <bean id="jaxrs-data-binding" class="org.apache.cxf.jaxrs.provider.JAXRSDataBinding">
+        <property name="provider" ref="jaxbProviderSoap"/>
+    </bean>
+
+    <bean id="jaxbProviderSoap" class="pl.touk.cxf.rest.example.provider.MessageWriterProvider"/>
+
+    <!--<bean id="jaxbProviderSoap" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider"/>-->
+
+
+    <!--<bean id="logInbound" class="org.apache.cxf.interceptor.LoggingInInterceptor"/>-->
+
+    <!-- Webservice message handlers -->
+    <bean id="jaxbXmlProvider" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider">
+        <property name="jaxbElementClassMap" ref="propertiesMap"/>
+    </bean>
+
+    <util:map id="propertiesMap">
+        <entry key="jaxb.formatted.output">
+            <value type="java.lang.Boolean">true</value>
+        </entry>
+    </util:map>
+</beans>
