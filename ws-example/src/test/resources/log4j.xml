@@ -18,7 +18,7 @@
 	</category>
 
     <category name="org.apache.cxf">
-        <priority value="TRACE" />
+        <priority value="INFO" />
     </category>
 
 

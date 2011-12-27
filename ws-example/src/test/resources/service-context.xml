@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:cxf="http://cxf.apache.org/core"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+                    http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+                    http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+
+    <jaxws:endpoint name="AuthService" address="http://localhost:7001/authManager/services/cxfAuth">
+            <!--implementor="pl.touk.cxf.ws.service.AuthServiceImpl"-->
+        <jaxws:implementor>
+            <ref bean="service" />
+        </jaxws:implementor>
+        <jaxws:features>
+            <bean class="org.apache.cxf.feature.LoggingFeature" />
+        </jaxws:features>
+    </jaxws:endpoint>
+
+    <bean id="service" class="pl.touk.cxf.ws.service.AuthServiceImpl"/>
+
+    <bean id="proxyFactory" class="org.apache.cxf.jaxws.JaxWsProxyFactoryBean">
+        <property name="serviceClass" value="pl.touk.cxf.ws.service.AuthService"/>
+        <property name="address" value="http://localhost:7001/authManager/services/cxfAuth"/>
+        <property name="bus" ref="cxf" />
+    </bean>
+
+    <bean id="client" class="pl.touk.cxf.ws.service.AuthService" factory-bean="proxyFactory"
+          factory-method="create"/>
+</beans>
