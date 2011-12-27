@@ -9,16 +9,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import pl.touk.cxf.ws.model.Employee;
 
 import javax.annotation.Resource;
+
 /**
  * User: mcl
  * Date: 27/12/11
  * Time: 11:15
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:service-context.xml"})
-public class AuthServiceImplTest {
+@ContextConfiguration(locations = {"classpath:service-context-ws-security.xml"})
+public class AuthServiceImplSecurityTest {
 
-    @Resource(name = "client")
+    @Resource
     private AuthService client;
 
     @Test
