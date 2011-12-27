@@ -28,11 +28,15 @@ public class ServerPasswordCallback implements CallbackHandler {
 
         WSPasswordCallback pc = (WSPasswordCallback) callbacks[0];
 
+        String id = pc.getIdentifier();
+
         // Set the password on the callback. This will be compared to the
         //     password which was sent from the client.
         // We can call pc.getIdentifer() right here to check the username
         //     if we want each client to have it's own password.
-        pc.setPassword(password);
+        if ("ws-client".equals(id)) {
+            pc.setPassword(password);
+        }
     }
 
 }
